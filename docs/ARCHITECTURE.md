@@ -13,6 +13,16 @@ Production-ready MLOps pipeline for diabetes risk prediction optimized for **rec
                           │
                           ▼
 ┌─────────────────────────────────────────────────────────────┐
+│              Exploratory Data Analysis (EDA)                 │
+│  - Data quality assessment (missing values, outliers)       │
+│  - Clinical context validation (diagnostic thresholds)      │
+│  - Bias detection (subgroup analysis)                       │
+│  - Feature importance and correlations                      │
+│  - Interactive marimo notebook                              │
+└─────────────────────────────────────────────────────────────┘
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────────┐
 │              Data Validation & Preprocessing                 │
 │  - Schema validation (Pandera)                              │
 │  - Zero-value imputation for biological features            │
@@ -58,6 +68,33 @@ Production-ready MLOps pipeline for diabetes risk prediction optimized for **rec
 ```
 
 ## Component Details
+
+### 0. Exploratory Data Analysis Layer
+
+**Tool:** Marimo interactive notebook
+
+**Sections:**
+1. Data overview (768 samples, 8 features, 35% positive class)
+2. Missing data analysis (49% Insulin, 30% SkinThickness missing)
+3. Univariate distributions (skewness, outliers)
+4. Bivariate analysis (features vs. diabetes outcome)
+5. Correlation analysis (multicollinearity check)
+6. Clinical context validation (diagnostic thresholds)
+7. Subgroup/bias analysis (age, BMI groups)
+8. Outlier detection (z-score method)
+9. Key findings and recommendations
+
+**Key Insights:**
+- Glucose strongest predictor (+29% in diabetic group)
+- Class imbalance 35% (justifies class weighting, NOT SMOTE)
+- No severe multicollinearity (all r < 0.8)
+- Younger cohort bias identified → monitoring needed
+- All preprocessing decisions validated by evidence
+
+**Running EDA:**
+```bash
+uv run marimo edit notebooks/01_exploratory_data_analysis.py
+```
 
 ### 1. Data Layer
 

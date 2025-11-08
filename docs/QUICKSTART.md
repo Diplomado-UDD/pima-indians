@@ -20,6 +20,18 @@ uv sync
 uv run dvc pull
 ```
 
+## Exploratory Data Analysis
+
+**Start here** before training:
+
+```bash
+# Launch interactive marimo notebook
+uv run marimo edit notebooks/01_exploratory_data_analysis.py
+# Opens in browser with 9 comprehensive sections
+```
+
+See [EDA_GUIDE.md](EDA_GUIDE.md) for findings and methodology.
+
 ## Training a Model
 
 ```bash
