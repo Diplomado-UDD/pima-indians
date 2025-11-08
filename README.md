@@ -5,6 +5,7 @@ Production-ready MLOps pipeline for diabetes screening, optimized for **recall/s
 ## Overview
 
 This pipeline implements a binary classification model for diabetes prediction with:
+- **Comprehensive EDA**: Interactive analysis of data quality, clinical validity, and bias
 - **Recall-optimized training**: Targets 85%+ sensitivity to catch high-risk patients
 - **Batch processing**: Daily screening of patient cohorts (up to 10K records)
 - **Full observability**: Model performance monitoring, data drift detection, audit trails
@@ -31,6 +32,23 @@ uv sync
 # Pull data from DVC
 uv run dvc pull
 ```
+
+### Exploratory Data Analysis
+
+**Start here** - EDA is critical for understanding data quality, clinical validity, and potential biases:
+
+```bash
+# Launch interactive marimo notebook
+uv run marimo edit notebooks/01_exploratory_data_analysis.py
+
+# Opens browser with 9 comprehensive sections:
+# - Data quality assessment (missing values, outliers)
+# - Clinical context validation (diagnostic thresholds)
+# - Bias detection (age/BMI subgroups)
+# - Feature correlations and importance
+```
+
+See [EDA Guide](docs/EDA_GUIDE.md) for detailed findings and how they inform the pipeline.
 
 ### Training a Model
 
@@ -97,6 +115,8 @@ pima-indians/
 │   ├── incoming/               # Daily batch inputs
 │   ├── predictions/            # Batch prediction outputs
 │   └── rejected/               # Invalid inputs
+├── notebooks/
+│   └── 01_exploratory_data_analysis.py  # Interactive EDA (marimo)
 ├── src/
 │   ├── data/                   # Data validation
 │   ├── features/               # Preprocessing & feature engineering
@@ -113,6 +133,17 @@ pima-indians/
 ```
 
 ## Key Features
+
+### Exploratory Data Analysis
+
+Evidence-based ML starts with thorough data understanding:
+- **Data quality**: 49% Insulin missing, 30% SkinThickness missing (zeros = missing)
+- **Clinical validation**: Features align with diagnostic criteria (Glucose ≥126 = diabetes)
+- **Bias detection**: Younger cohort identified, performance monitoring across age groups
+- **Feature insights**: Glucose strongest predictor (+29% in diabetic group)
+- **Interactive analysis**: Marimo notebook with 9 comprehensive sections
+
+All preprocessing and model design decisions justified by EDA findings.
 
 ### Recall Optimization
 
