@@ -1,0 +1,74 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# DVC
+/data/raw/diabetes.csv
+
+# MLflow
+mlruns/
+
+# Models
+models/experiments/
+models/archive/
+models/production_backup/
+
+# Logs
+logs/
+*.log
+
+# Reports
+reports/drift/
+reports/performance/
+reports/model_evaluation/
+
+# Data directories (managed by DVC or generated)
+data/validated/
+data/incoming/
+data/predictions/
+data/rejected/
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+notebooks/.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db

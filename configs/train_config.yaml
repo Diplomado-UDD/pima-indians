@@ -1,0 +1,76 @@
+# Training Configuration for Recall-Optimized Diabetes Prediction
+
+data:
+    raw_path: "data/raw/diabetes.csv"
+    random_seed: 42
+    test_size: 0.2
+    val_size: 0.2
+    stratify: true
+
+optimization:
+    target_metric: "f2_score"
+    min_recall_constraint: 0.85
+    min_precision_constraint: 0.45
+    beta: 2.0
+
+model:
+    algorithm: "lightgbm"
+    class_weight_multiplier: 2.5
+    random_state: 42
+
+hyperparameter_tuning:
+    enabled: true
+    n_trials: 100
+    timeout_seconds: 3600
+    search_space:
+        learning_rate:
+            min: 0.01
+            max: 0.1
+            log: true
+        max_depth:
+            min: 3
+            max: 10
+        num_leaves:
+            min: 20
+            max: 100
+        scale_pos_weight:
+            min: 2.0
+            max: 4.0
+        min_child_samples:
+            min: 10
+            max: 50
+        subsample:
+            min: 0.6
+            max: 1.0
+        colsample_bytree:
+            min: 0.6
+            max: 1.0
+
+threshold_optimization:
+    method: "precision_recall_curve"
+    target_recall: 0.85
+    maximize: "precision"
+
+evaluation:
+    primary_metrics:
+        - "recall"
+        - "precision"
+        - "f2_score"
+        - "auc_roc"
+    cost_analysis:
+        false_negative_cost: 1000
+        false_positive_cost: 50
+
+mlflow:
+    experiment_name: "diabetes-prediction"
+    tracking_uri: "sqlite:///mlruns/mlflow.db"
+    artifact_location: "mlruns/artifacts"
+
+preprocessing:
+    handle_zeros_as_missing:
+        - "Glucose"
+        - "BloodPressure"
+        - "SkinThickness"
+        - "BMI"
+    imputation_strategy: "median"
+    scaling_method: "standard"

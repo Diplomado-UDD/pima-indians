@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+    batch-predictor:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: diabetes-batch-predictor
+        volumes:
+            - ./data:/data
+            - ./logs:/logs
+            - ./models/production:/app/models/production:ro
+        environment:
+            - PYTHONUNBUFFERED=1
+        command: >
+            --input /data/incoming/batch.csv
+            --config /app/configs/inference_config.yaml
+            --model-dir /app/models/production

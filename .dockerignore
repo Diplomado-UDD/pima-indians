@@ -1,0 +1,45 @@
+# Git
+.git
+.gitignore
+.dvc
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv
+venv/
+ENV/
+env/
+
+# Data (mount as volumes instead)
+data/
+mlruns/
+models/
+reports/
+logs/
+notebooks/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Documentation
+README.md
+docs/
+
+# CI/CD
+.github/
+
+# Testing
+tests/
+pytest.ini
+.pytest_cache/
+
+# DVC
+.dvc/
+*.dvc
