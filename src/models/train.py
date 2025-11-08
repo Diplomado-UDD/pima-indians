@@ -81,13 +81,18 @@ def find_optimal_threshold(y_true, y_proba, min_recall=0.85):
     """
     precisions, recalls, thresholds = precision_recall_curve(y_true, y_proba)
 
+    # precision_recall_curve returns n+1 precisions/recalls but n thresholds
+    # We need to align them by excluding the last precision/recall
+    precisions = precisions[:-1]
+    recalls = recalls[:-1]
+
     valid_idx = recalls >= min_recall
     if not any(valid_idx):
         print(f"Warning: Cannot achieve recall >= {min_recall}")
         return 0.5
 
     valid_precisions = precisions[valid_idx]
-    valid_thresholds = thresholds[: len(precisions)][valid_idx]
+    valid_thresholds = thresholds[valid_idx]
 
     best_idx = np.argmax(valid_precisions)
     return valid_thresholds[best_idx]
