@@ -2763,6 +2763,11 @@ dev = [
     { name = "marimo" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "marimo" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "black", specifier = ">=24.0.0" },
@@ -2786,6 +2791,9 @@ requires-dist = [
     { name = "seaborn", specifier = ">=0.13.0" },
 ]
 provides-extras = ["dev"]
+
+[package.metadata.requires-dev]
+dev = [{ name = "marimo", specifier = ">=0.17.7" }]
 
 [[package]]
 name = "platformdirs"
