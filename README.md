@@ -118,6 +118,7 @@ pima-indians/
 ├── notebooks/
 │   └── 01_exploratory_data_analysis.py  # Interactive EDA (marimo)
 ├── src/
+│   ├── config/                 # Shared constants and configuration
 │   ├── data/                   # Data validation
 │   ├── features/               # Preprocessing & feature engineering
 │   ├── models/                 # Training & evaluation
@@ -137,7 +138,8 @@ pima-indians/
 ### Exploratory Data Analysis
 
 Evidence-based ML starts with thorough data understanding:
-- **Data quality**: 49% Insulin missing, 30% SkinThickness missing (zeros = missing)
+- **Data quality**: 49% Insulin missing, 30% SkinThickness missing (zeros = missing for critical features)
+- **Preprocessing**: Zero imputation for Glucose, BloodPressure, SkinThickness, BMI (Insulin zeros kept as-is)
 - **Clinical validation**: Features align with diagnostic criteria (Glucose ≥126 = diabetes)
 - **Bias detection**: Younger cohort identified, performance monitoring across age groups
 - **Feature insights**: Glucose strongest predictor (+29% in diabetic group)
@@ -162,10 +164,12 @@ Model is tuned to maximize **sensitivity (recall)** while maintaining acceptable
 
 ### Monitoring
 
-- **Prediction logging**: All predictions logged with model version, timestamp
-- **Data drift detection**: Evidently AI monitors feature distributions
+- **Prediction logging**: Structured logging with configurable log levels (JSONL format)
+- **Data drift detection**: Automatic drift detection integrated into batch processing (Evidently AI)
 - **Performance tracking**: Delayed ground truth evaluation (when labels available)
-- **Audit trails**: Reproduce any historical prediction
+- **Retry logic**: Configurable retry mechanism for robust batch processing
+- **Error handling**: Comprehensive error handling with detailed logging
+- **Audit trails**: Reproduce any historical prediction with full metadata
 
 ## Model Performance (Example)
 
@@ -201,6 +205,14 @@ uv run black src/ tests/
 uv run ruff check src/ tests/
 ```
 
+### Project Structure Updates
+
+The codebase uses shared constants for consistency:
+- **Constants module**: `src/config/constants.py` defines `REQUIRED_COLUMNS`, `ZERO_IMPUTE_COLUMNS`, etc.
+- **Validation**: All modules use `DiabetesDataValidator` for consistent validation
+- **Logging**: Structured logging with Python `logging` module throughout
+- **Error handling**: Comprehensive error handling with retry logic
+
 ### Adding New Dependencies
 
 ```bash
@@ -223,9 +235,12 @@ Key parameters:
 ### Inference Configuration (`configs/inference_config.yaml`)
 
 Key settings:
-- `validation.required_columns`: List of expected features
+- `validation.required_columns`: List of expected features (uses shared constants)
 - `output.risk_thresholds`: Low/Medium/High risk categories
-- `monitoring.enable_drift_detection`: true
+- `monitoring.enable_drift_detection`: true (automatically runs during batch processing)
+- `logging.log_level`: INFO/DEBUG/WARNING/ERROR
+- `retry.max_attempts`: Number of retry attempts for file operations
+- `retry.backoff_seconds`: Seconds to wait between retries
 
 ## Deployment
 

@@ -9,6 +9,8 @@ import pandas as pd
 from evidently.metric_preset import DataDriftPreset
 from evidently.report import Report
 
+from src.config.constants import REQUIRED_COLUMNS
+
 
 def detect_drift(reference_path: Path, current_path: Path, output_dir: Path, threshold: float = 0.05):
     """Detect data drift between reference and current datasets.
@@ -27,19 +29,8 @@ def detect_drift(reference_path: Path, current_path: Path, output_dir: Path, thr
     reference_df = pd.read_csv(reference_path)
     current_df = pd.read_csv(current_path)
 
-    required_columns = [
-        "Pregnancies",
-        "Glucose",
-        "BloodPressure",
-        "SkinThickness",
-        "Insulin",
-        "BMI",
-        "DiabetesPedigreeFunction",
-        "Age",
-    ]
-
-    reference_features = reference_df[required_columns]
-    current_features = current_df[required_columns]
+    reference_features = reference_df[REQUIRED_COLUMNS]
+    current_features = current_df[REQUIRED_COLUMNS]
 
     report = Report(metrics=[DataDriftPreset()])
 
@@ -77,7 +68,7 @@ def detect_drift(reference_path: Path, current_path: Path, output_dir: Path, thr
     print(f"Drift Detection Report")
     print(f"=" * 60)
     print(f"Dataset drift detected: {drift_summary['dataset_drift']}")
-    print(f"Drifted columns: {drift_summary['number_of_drifted_columns']}/{len(required_columns)}")
+    print(f"Drifted columns: {drift_summary['number_of_drifted_columns']}/{len(REQUIRED_COLUMNS)}")
     print(f"Share of drifted columns: {drift_summary['share_of_drifted_columns']:.1%}")
     print()
 

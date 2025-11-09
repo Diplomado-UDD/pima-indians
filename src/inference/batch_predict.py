@@ -2,12 +2,25 @@
 
 import argparse
 import json
+import logging
+import time
 from datetime import datetime
 from pathlib import Path
 
 import joblib
 import pandas as pd
 import yaml
+
+from src.config.constants import DEFAULT_ID_COLUMN, REQUIRED_COLUMNS
+from src.data.validate_input import DiabetesDataValidator
+from src.monitoring.drift_detection import detect_drift
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+)
+logger = logging.getLogger(__name__)
 
 
 def load_config(config_path: Path) -> dict:
@@ -42,7 +55,7 @@ def load_model_artifacts(model_dir: Path):
 
 
 def validate_input(df: pd.DataFrame, config: dict) -> tuple:
-    """Validate input dataframe.
+    """Validate input dataframe using DiabetesDataValidator.
 
     Args:
         df: Input dataframe
@@ -51,21 +64,24 @@ def validate_input(df: pd.DataFrame, config: dict) -> tuple:
     Returns:
         Tuple of (is_valid, error_messages)
     """
-    errors = []
-    required_cols = config["validation"]["required_columns"]
+    validator = DiabetesDataValidator()
 
-    missing_cols = set(required_cols) - set(df.columns)
-    if missing_cols:
-        errors.append(f"Missing columns: {missing_cols}")
+    # Validate schema using validator
+    is_valid, errors = validator.validate_schema(df)
+    if not is_valid:
         return False, errors
 
-    if config["validation"]["id_column"] not in df.columns:
-        if not config["validation"]["allow_missing_id"]:
-            errors.append(f"Missing ID column: {config['validation']['id_column']}")
+    # Check ID column if required
+    id_column = config["validation"].get("id_column", DEFAULT_ID_COLUMN)
+    if id_column not in df.columns:
+        if not config["validation"].get("allow_missing_id", False):
+            errors.append(f"Missing ID column: {id_column}")
             return False, errors
 
+    # Check for null values (validator checks types but not nulls explicitly)
+    required_cols = config["validation"]["required_columns"]
     for col in required_cols:
-        if df[col].isnull().any():
+        if col in df.columns and df[col].isnull().any():
             null_count = df[col].isnull().sum()
             errors.append(f"Column '{col}' has {null_count} null values")
 
@@ -95,42 +111,63 @@ def categorize_risk(probabilities: pd.Series, thresholds: dict) -> pd.Series:
 
 
 def process_batch(
-    input_path: Path, output_dir: Path, model_artifacts: dict, config: dict
+    input_path: Path,
+    output_dir: Path,
+    model_artifacts: dict,
+    config: dict,
+    max_retries: int = 1,
+    backoff_seconds: int = 0,
 ) -> dict:
-    """Process a single batch file.
+    """Process a single batch file with retry logic.
 
     Args:
         input_path: Path to input CSV
         output_dir: Output directory
         model_artifacts: Loaded model artifacts
         config: Inference configuration
+        max_retries: Maximum number of retry attempts
+        backoff_seconds: Seconds to wait between retries
 
     Returns:
         Processing report dictionary
     """
     start_time = datetime.now()
 
-    try:
-        df = pd.read_csv(input_path)
-    except Exception as e:
-        return {
-            "status": "error",
-            "file": input_path.name,
-            "error": f"Failed to read file: {str(e)}",
-            "timestamp": start_time.isoformat(),
-        }
+    for attempt in range(max_retries):
+        try:
+            df = pd.read_csv(input_path)
+            break
+        except Exception as e:
+            if attempt < max_retries - 1:
+                logger.warning(f"Attempt {attempt + 1} failed: {e}. Retrying in {backoff_seconds}s...")
+                time.sleep(backoff_seconds)
+                continue
+            return {
+                "status": "error",
+                "file": input_path.name,
+                "error": f"Failed to read file after {max_retries} attempts: {str(e)}",
+                "timestamp": start_time.isoformat(),
+            }
 
     is_valid, errors = validate_input(df, config)
     if not is_valid:
-        rejected_path = Path(config["batch"]["rejected_dir"]) / f"rejected_{input_path.name}"
-        df.to_csv(rejected_path, index=False)
+        rejected_dir = Path(config["batch"]["rejected_dir"])
+        rejected_dir.mkdir(parents=True, exist_ok=True)
+        rejected_path = rejected_dir / f"rejected_{input_path.name}"
+        
+        try:
+            df.to_csv(rejected_path, index=False)
+        except Exception as e:
+            logger.error(f"Failed to save rejected file: {e}")
 
-        error_report_path = (
-            Path(config["batch"]["rejected_dir"]) / f"errors_{input_path.stem}.json"
-        )
-        with open(error_report_path, "w") as f:
-            json.dump({"errors": errors, "file": input_path.name}, f, indent=2)
+        error_report_path = rejected_dir / f"errors_{input_path.stem}.json"
+        try:
+            with open(error_report_path, "w") as f:
+                json.dump({"errors": errors, "file": input_path.name}, f, indent=2)
+        except Exception as e:
+            logger.error(f"Failed to save error report: {e}")
 
+        logger.warning(f"Batch {input_path.name} rejected: {errors}")
         return {
             "status": "rejected",
             "file": input_path.name,
@@ -144,14 +181,46 @@ def process_batch(
     threshold = model_artifacts["threshold"]
     metadata = model_artifacts.get("metadata", {})
 
+    # Use required columns from config (should match REQUIRED_COLUMNS)
     required_features = config["validation"]["required_columns"]
     X = df[required_features]
+
+    # Perform drift detection if enabled
+    drift_summary = None
+    if config.get("monitoring", {}).get("enable_drift_detection", False):
+        try:
+            reference_path = Path(config["monitoring"]["reference_data_path"])
+            drift_threshold = config["monitoring"].get("drift_threshold", 0.05)
+            drift_output_dir = Path(config["monitoring"]["drift_report_dir"])
+            
+            # Save current batch temporarily for drift detection
+            temp_current_path = output_dir / f"temp_current_{input_path.stem}.csv"
+            X.to_csv(temp_current_path, index=False)
+            
+            drift_summary = detect_drift(
+                reference_path=reference_path,
+                current_path=temp_current_path,
+                output_dir=drift_output_dir,
+                threshold=drift_threshold,
+            )
+            
+            # Clean up temp file
+            temp_current_path.unlink(missing_ok=True)
+            
+            if drift_summary.get("dataset_drift", False):
+                logger.warning(
+                    f"Data drift detected in {input_path.name}: "
+                    f"{drift_summary['number_of_drifted_columns']} columns drifted"
+                )
+        except Exception as e:
+            logger.warning(f"Drift detection failed: {e}. Continuing with prediction.")
 
     try:
         X_processed = preprocessor.transform(X)
         probabilities = model.predict_proba(X_processed)[:, 1]
         predictions = (probabilities >= threshold).astype(int)
     except Exception as e:
+        logger.error(f"Prediction failed for {input_path.name}: {e}")
         return {
             "status": "error",
             "file": input_path.name,
@@ -161,8 +230,9 @@ def process_batch(
 
     output_data = {}
 
-    if config["validation"]["id_column"] in df.columns:
-        output_data[config["validation"]["id_column"]] = df[config["validation"]["id_column"]]
+    id_column = config["validation"].get("id_column", DEFAULT_ID_COLUMN)
+    if id_column in df.columns:
+        output_data[id_column] = df[id_column]
 
     output_data["screening_recommendation"] = predictions
 
@@ -186,7 +256,17 @@ def process_batch(
     output_filename = f"predictions_{input_path.stem}_{timestamp}.csv"
     output_path = output_dir / output_filename
 
-    output_df.to_csv(output_path, index=False)
+    try:
+        output_df.to_csv(output_path, index=False)
+        logger.info(f"Predictions saved to {output_path}")
+    except Exception as e:
+        logger.error(f"Failed to save predictions: {e}")
+        return {
+            "status": "error",
+            "file": input_path.name,
+            "error": f"Failed to save predictions: {str(e)}",
+            "timestamp": start_time.isoformat(),
+        }
 
     end_time = datetime.now()
     duration = (end_time - start_time).total_seconds()
@@ -207,13 +287,20 @@ def process_batch(
         "timestamp": start_time.isoformat(),
     }
 
-    if config["logging"]["predictions_log_dir"]:
+    if drift_summary:
+        report["drift_detected"] = drift_summary.get("dataset_drift", False)
+        report["drifted_columns"] = drift_summary.get("number_of_drifted_columns", 0)
+
+    if config.get("logging", {}).get("predictions_log_dir"):
         log_dir = Path(config["logging"]["predictions_log_dir"])
         log_dir.mkdir(parents=True, exist_ok=True)
 
         log_file = log_dir / f"{datetime.now().strftime('%Y%m%d')}.jsonl"
-        with open(log_file, "a") as f:
-            f.write(json.dumps(report) + "\n")
+        try:
+            with open(log_file, "a") as f:
+                f.write(json.dumps(report) + "\n")
+        except Exception as e:
+            logger.warning(f"Failed to write prediction log: {e}")
 
     return report
 
@@ -236,38 +323,64 @@ def main():
     )
     args = parser.parse_args()
 
+    # Set log level from config if available
     config = load_config(args.config)
+    log_level = config.get("logging", {}).get("log_level", "INFO")
+    logging.getLogger().setLevel(getattr(logging, log_level.upper(), logging.INFO))
 
     output_dir = Path(config["batch"]["output_dir"])
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    print(f"Loading model from: {args.model_dir}")
-    model_artifacts = load_model_artifacts(args.model_dir)
+    logger.info(f"Loading model from: {args.model_dir}")
+    try:
+        model_artifacts = load_model_artifacts(args.model_dir)
+    except Exception as e:
+        logger.error(f"Failed to load model: {e}")
+        return 1
 
-    print(f"Processing: {args.input}")
-    report = process_batch(args.input, output_dir, model_artifacts, config)
+    logger.info(f"Processing: {args.input}")
+    
+    # Get retry settings from config
+    retry_config = config.get("retry", {})
+    max_retries = retry_config.get("max_attempts", 1)
+    backoff_seconds = retry_config.get("backoff_seconds", 0)
+    
+    report = process_batch(
+        args.input, output_dir, model_artifacts, config, max_retries, backoff_seconds
+    )
 
-    print(f"\n{'=' * 60}")
-    print("BATCH PROCESSING REPORT")
-    print(f"{'=' * 60}")
-    print(json.dumps(report, indent=2))
+    logger.info(f"\n{'=' * 60}")
+    logger.info("BATCH PROCESSING REPORT")
+    logger.info(f"{'=' * 60}")
+    logger.info(json.dumps(report, indent=2))
 
     if report["status"] == "success":
-        print(f"\nPredictions saved to: {output_dir / report['output_file']}")
-        print(f"Records processed: {report['records_processed']}")
-        print(f"Positive predictions: {report['positive_predictions']} ({report['positive_rate']:.1%})")
-        print(f"Processing time: {report['duration_seconds']:.2f}s")
+        logger.info(f"\nPredictions saved to: {output_dir / report['output_file']}")
+        logger.info(f"Records processed: {report['records_processed']}")
+        logger.info(
+            f"Positive predictions: {report['positive_predictions']} "
+            f"({report['positive_rate']:.1%})"
+        )
+        logger.info(f"Processing time: {report['duration_seconds']:.2f}s")
+        if report.get("drift_detected"):
+            logger.warning(f"Data drift detected: {report.get('drifted_columns', 0)} columns")
     else:
-        print(f"\nProcessing failed: {report.get('error', 'Unknown error')}")
+        logger.error(f"\nProcessing failed: {report.get('error', 'Unknown error')}")
         if "errors" in report:
-            print(f"Validation errors: {report['errors']}")
+            logger.error(f"Validation errors: {report['errors']}")
+        return 1
 
-    if config["logging"]["batch_log_path"]:
+    if config.get("logging", {}).get("batch_log_path"):
         log_path = Path(config["logging"]["batch_log_path"])
         log_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(log_path, "a") as f:
-            f.write(json.dumps(report) + "\n")
+        try:
+            with open(log_path, "a") as f:
+                f.write(json.dumps(report) + "\n")
+        except Exception as e:
+            logger.warning(f"Failed to write batch log: {e}")
+
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    exit(main())

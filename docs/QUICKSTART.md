@@ -35,8 +35,8 @@ See [EDA_GUIDE.md](EDA_GUIDE.md) for findings and methodology.
 ## Training a Model
 
 ```bash
-# Train with default config (recall-optimized)
-uv run python -m src.models.train
+# Train with config (recall-optimized)
+uv run python -m src.models.train --config configs/train_config.yaml
 
 # View experiments in MLflow UI
 uv run mlflow ui --backend-store-uri sqlite:///mlruns/mlflow.db
@@ -91,11 +91,19 @@ cp your_batch.csv data/incoming/
 # Run batch prediction
 uv run python -m src.inference.batch_predict \
     --input data/incoming/your_batch.csv \
-    --model-dir models/production
+    --model-dir models/production \
+    --config configs/inference_config.yaml
 
 # Check results
 cat data/predictions/predictions_your_batch_*.csv
 ```
+
+**Features:**
+- **Automatic validation**: Uses DiabetesDataValidator for schema validation
+- **Drift detection**: Automatically runs if enabled in config
+- **Retry logic**: Configurable retries for file operations
+- **Structured logging**: All operations logged with configurable log levels
+- **Error handling**: Comprehensive error handling with detailed messages
 
 **Output columns:**
 - `patient_id`: Original ID
@@ -121,8 +129,20 @@ docker run --rm \
 
 ## Monitoring for Data Drift
 
+**Automatic Drift Detection:**
+Drift detection is automatically integrated into batch prediction when enabled in `configs/inference_config.yaml`:
+```yaml
+monitoring:
+    enable_drift_detection: true
+    reference_data_path: "data/raw/diabetes.csv"
+    drift_report_dir: "reports/drift"
+```
+
+Drift results are included in the batch processing report and logged as warnings if detected.
+
+**Manual Drift Detection:**
 ```bash
-# Compare production data to training data
+# Compare production data to training data manually
 uv run python -m src.monitoring.drift_detection \
     --reference data/raw/diabetes.csv \
     --current data/incoming/recent_batch.csv \
@@ -136,6 +156,7 @@ open reports/drift/drift_report_*.html
 - Investigate data quality
 - Consider retraining model
 - Update feature preprocessing if needed
+- Check logs for drift details in batch processing reports
 
 ## Running Tests
 
@@ -179,6 +200,31 @@ docker ps
 
 # Clean build cache
 docker system prune -a
+```
+
+### Issue: Batch prediction fails with validation errors
+
+```bash
+# Check input data schema matches required columns
+# Required columns are defined in src/config/constants.py
+# Or check configs/inference_config.yaml validation.required_columns
+
+# View detailed error logs
+uv run python -m src.inference.batch_predict \
+    --input data/incoming/your_batch.csv \
+    --config configs/inference_config.yaml
+# Check logs/predictions/ for detailed error messages
+```
+
+### Issue: Drift detection not running
+
+```bash
+# Ensure drift detection is enabled in config
+# Check configs/inference_config.yaml:
+# monitoring.enable_drift_detection: true
+
+# Verify reference data path exists
+ls data/raw/diabetes.csv
 ```
 
 ## Performance Benchmarks

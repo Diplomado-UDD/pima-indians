@@ -7,7 +7,6 @@ from pathlib import Path
 
 import joblib
 import mlflow
-import mlflow.sklearn
 import numpy as np
 import optuna
 import pandas as pd
@@ -21,7 +20,7 @@ from sklearn.metrics import (
     recall_score,
     roc_auc_score,
 )
-from sklearn.model_selection import cross_val_score, train_test_split
+from sklearn.model_selection import train_test_split
 
 from src.features.preprocess import create_preprocessing_pipeline, get_feature_names
 

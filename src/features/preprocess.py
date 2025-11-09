@@ -3,9 +3,10 @@
 import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
+
+from src.config.constants import REQUIRED_COLUMNS, ZERO_IMPUTE_COLUMNS
 
 
 class ZeroImputer(BaseEstimator, TransformerMixin):
@@ -93,19 +94,7 @@ class FeatureEngineer(BaseEstimator, TransformerMixin):
         if isinstance(X, pd.DataFrame):
             X_df = X.copy()
         else:
-            X_df = pd.DataFrame(
-                X,
-                columns=[
-                    "Pregnancies",
-                    "Glucose",
-                    "BloodPressure",
-                    "SkinThickness",
-                    "Insulin",
-                    "BMI",
-                    "DiabetesPedigreeFunction",
-                    "Age",
-                ],
-            )
+            X_df = pd.DataFrame(X, columns=REQUIRED_COLUMNS)
 
         X_df["BMI_Category"] = pd.cut(
             X_df["BMI"],
@@ -130,13 +119,14 @@ def create_preprocessing_pipeline(zero_impute_columns=None):
     """Create preprocessing pipeline.
 
     Args:
-        zero_impute_columns: Columns where zeros should be imputed
+        zero_impute_columns: Columns where zeros should be imputed.
+            If None, uses default ZERO_IMPUTE_COLUMNS from constants.
 
     Returns:
         sklearn Pipeline
     """
     if zero_impute_columns is None:
-        zero_impute_columns = ["Glucose", "BloodPressure", "SkinThickness", "BMI"]
+        zero_impute_columns = ZERO_IMPUTE_COLUMNS
 
     pipeline = Pipeline(
         [
@@ -160,13 +150,4 @@ def get_feature_names(preprocessor):
     """
     if hasattr(preprocessor.named_steps["feature_engineer"], "feature_names_"):
         return preprocessor.named_steps["feature_engineer"].feature_names_
-    return [
-        "Pregnancies",
-        "Glucose",
-        "BloodPressure",
-        "SkinThickness",
-        "Insulin",
-        "BMI",
-        "DiabetesPedigreeFunction",
-        "Age",
-    ]
+    return REQUIRED_COLUMNS.copy()

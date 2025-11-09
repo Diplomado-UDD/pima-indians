@@ -30,12 +30,14 @@ uv run marimo edit notebooks/01_exploratory_data_analysis.py
 
 #### 2. Missing Data Analysis (Section 2)
 **Critical Finding**:
-- Zeros represent missing values (biologically impossible)
-- Insulin: 49% missing
+- Zeros represent missing values (biologically impossible for critical features)
+- Insulin: 49% missing (note: zeros may be valid for fasting insulin, not imputed)
 - SkinThickness: 30% missing
 - BloodPressure: 5% missing
+- Glucose: Small % missing (critical feature)
+- BMI: Small % missing (critical feature)
 
-**Decision**: Median imputation (implemented in pipeline)
+**Decision**: Median imputation for Glucose, BloodPressure, SkinThickness, BMI (implemented in pipeline). Insulin zeros are kept as-is.
 
 #### 3. Univariate Analysis (Section 3)
 - Distribution of each feature
@@ -92,9 +94,11 @@ uv run marimo edit notebooks/01_exploratory_data_analysis.py
 
 ### Data Quality Fixes
 ```python
-# Issue: Zeros as missing values
+# Issue: Zeros as missing values for critical biological features
 # Solution: ZeroImputer with median imputation
-ZeroImputer(columns=['Glucose', 'BloodPressure', 'BMI'])
+# Note: Only imputes Glucose, BloodPressure, SkinThickness, BMI
+# Insulin zeros are kept as-is (may be valid for fasting insulin)
+ZeroImputer(columns=['Glucose', 'BloodPressure', 'SkinThickness', 'BMI'])
 ```
 
 ### Feature Engineering Rationale
@@ -125,7 +129,8 @@ scale_pos_weight = 3.73  # NOT SMOTE!
 | EDA Finding | Model Implementation | Validation |
 |-------------|---------------------|------------|
 | Glucose strongest predictor | Feature importance: #1 | ✓ Confirmed |
-| 49% Insulin missing | Median imputation | ✓ Implemented |
+| Missing values in critical features | Median imputation (Glucose, BloodPressure, SkinThickness, BMI) | ✓ Implemented |
+| 49% Insulin missing | Not imputed (zero may be valid for fasting insulin) | ⚠️ Design decision |
 | Class imbalance (35%) | Class weighting 3.73x | ✓ Implemented |
 | Young cohort bias | Subgroup monitoring needed | ⚠️ To monitor |
 | Clinical thresholds | Threshold optimization | ✓ Implemented |
@@ -176,7 +181,7 @@ uv run marimo edit notebooks/01_exploratory_data_analysis.py
 uv run python -m src.data.validate_input data/raw/diabetes.csv
 
 # 4. Train model
-uv run python -m src.models.train
+uv run python -m src.models.train --config configs/train_config.yaml
 
 # 5. Evaluate (including subgroup analysis)
 uv run python -m src.models.evaluate --model-path models/production/model_artifacts.pkl

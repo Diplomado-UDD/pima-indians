@@ -8,20 +8,13 @@ import pandas as pd
 import pandera as pa
 from pandera import Column, DataFrameSchema
 
+from src.config.constants import REQUIRED_COLUMNS
+
 
 class DiabetesDataValidator:
     """Validates input data for diabetes prediction."""
 
-    REQUIRED_COLUMNS = [
-        "Pregnancies",
-        "Glucose",
-        "BloodPressure",
-        "SkinThickness",
-        "Insulin",
-        "BMI",
-        "DiabetesPedigreeFunction",
-        "Age",
-    ]
+    REQUIRED_COLUMNS = REQUIRED_COLUMNS
 
     def __init__(self):
         """Initialize validator with schema."""
@@ -40,13 +33,19 @@ class DiabetesDataValidator:
         )
 
     def validate_schema(self, df: pd.DataFrame) -> Tuple[bool, List[str]]:
-        """Validate dataframe schema.
+        """Validate dataframe schema against required columns and data types.
+
+        Checks for:
+        - Missing required columns
+        - Data type mismatches
+        - Value constraints (e.g., non-negative values, age <= 120)
 
         Args:
             df: Input dataframe
 
         Returns:
-            Tuple of (is_valid, error_messages)
+            Tuple of (is_valid, error_messages) where error_messages is a list
+            of validation error descriptions if validation fails
         """
         errors = []
 

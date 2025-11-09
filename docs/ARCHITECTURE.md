@@ -75,7 +75,7 @@ Production-ready MLOps pipeline for diabetes risk prediction optimized for **rec
 
 **Sections:**
 1. Data overview (768 samples, 8 features, 35% positive class)
-2. Missing data analysis (49% Insulin, 30% SkinThickness missing)
+2. Missing data analysis (49% Insulin, 30% SkinThickness missing - note: Insulin not imputed)
 3. Univariate distributions (skewness, outliers)
 4. Bivariate analysis (features vs. diabetes outcome)
 5. Correlation analysis (multicollinearity check)
@@ -104,6 +104,10 @@ uv run marimo edit notebooks/01_exploratory_data_analysis.py
 - Local filesystem for intermediate/output data
 
 **Schema:**
+- Defined in `src/config/constants.py` (REQUIRED_COLUMNS)
+- Consistent across validation, preprocessing, and inference
+- Schema validation using Pandera with DiabetesDataValidator
+
 ```python
 {
     "Pregnancies": int (≥0),
@@ -121,7 +125,9 @@ uv run marimo edit notebooks/01_exploratory_data_analysis.py
 **Preprocessing Pipeline:**
 ```python
 Pipeline([
-    ('zero_imputer', ZeroImputer(columns=['Glucose', 'BloodPressure', 'BMI'])),
+    ('zero_imputer', ZeroImputer(columns=ZERO_IMPUTE_COLUMNS)),  # From constants
+    # ZERO_IMPUTE_COLUMNS = ['Glucose', 'BloodPressure', 'SkinThickness', 'BMI']
+    # Note: Insulin is NOT imputed (zero may be valid for fasting insulin)
     ('feature_engineer', FeatureEngineer()),  # Creates derived features
     ('scaler', StandardScaler())  # Standardization
 ])
@@ -178,6 +184,10 @@ colsample_bytree: 0.749
 python:3.12-slim (base)
   ├── uv (dependency manager)
   ├── src/ (application code)
+  │   ├── config/ (shared constants)
+  │   ├── data/ (validation using DiabetesDataValidator)
+  │   ├── inference/ (batch prediction with logging)
+  │   └── monitoring/ (drift detection)
   ├── models/production/ (mounted volume)
   └── configs/ (configuration)
 ```
@@ -185,12 +195,15 @@ python:3.12-slim (base)
 **Prediction Flow:**
 ```python
 1. Load production model + metadata
-2. Validate input CSV schema
-3. Apply preprocessing pipeline
-4. Generate probabilities: model.predict_proba()
-5. Apply optimal threshold: preds = (proba >= 0.459)
-6. Categorize risk: Low (<0.35) | Medium (0.35-0.60) | High (>0.60)
-7. Save predictions + log metrics
+2. Validate input CSV schema (using DiabetesDataValidator)
+3. Retry logic for file operations (configurable)
+4. Apply preprocessing pipeline
+5. Perform drift detection (if enabled in config)
+6. Generate probabilities: model.predict_proba()
+7. Apply optimal threshold: preds = (proba >= 0.459)
+8. Categorize risk: Low (<0.35) | Medium (0.35-0.60) | High (>0.60)
+9. Save predictions + structured logging (JSONL)
+10. Error handling with detailed logging at each step
 ```
 
 **Output Format:**
@@ -203,23 +216,33 @@ P0001,1,0.691,High,20251108_190038,2025-11-08T19:06:49.819798
 
 **Data Drift Detection:**
 - **Method:** Evidently AI library
+- **Integration:** Automatically runs during batch prediction (if enabled)
 - **Tests:**
   - Continuous features: Kolmogorov-Smirnov test
   - Categorical features: Chi-squared test
-- **Frequency:** After each batch or weekly
+- **Frequency:** After each batch (configurable)
 - **Alert threshold:** Drift in ≥3 features or p-value < 0.05
+- **Reporting:** Drift results included in batch processing reports
 
 **Performance Monitoring:**
-- **Prediction logging:** All predictions to JSONL (audit trail)
+- **Prediction logging:** Structured logging with Python `logging` module (JSONL format)
+- **Log levels:** Configurable (INFO/DEBUG/WARNING/ERROR)
 - **Delayed evaluation:** When labels available weeks/months later
-- **Metrics tracked:** Recall, precision, F2, AUC, FN count
-- **Alerting:** If recall < 0.80 for 2 consecutive weeks
+- **Metrics tracked:** Recall, precision, F2, AUC, FN count, drift status
+- **Alerting:** If recall < 0.80 for 2 consecutive weeks or drift detected
 
 **System Health:**
 - Batch processing time
 - Record throughput
-- Error rates by type
+- Error rates by type (with retry statistics)
 - Resource usage (CPU, memory)
+- Retry attempt tracking
+
+**Error Handling:**
+- Comprehensive try-catch blocks for all operations
+- Detailed error messages with context
+- Failed operations logged with stack traces (debug mode)
+- Rejected batches saved with error reports
 
 ### 5. Model Registry
 
