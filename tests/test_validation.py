@@ -1,7 +1,6 @@
 """Tests for data validation."""
 
 import pandas as pd
-import pytest
 
 from src.data.validate_input import DiabetesDataValidator
 

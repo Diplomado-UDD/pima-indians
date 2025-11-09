@@ -2,7 +2,6 @@
 
 import numpy as np
 import pandas as pd
-import pytest
 from sklearn.pipeline import Pipeline
 
 from src.features.preprocess import ZeroImputer, FeatureEngineer, create_preprocessing_pipeline

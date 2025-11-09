@@ -22,7 +22,7 @@ from sklearn.metrics import (
 )
 from sklearn.model_selection import train_test_split
 
-from src.features.preprocess import create_preprocessing_pipeline, get_feature_names
+from src.features.preprocess import create_preprocessing_pipeline
 
 
 def load_config(config_path: Path) -> dict:

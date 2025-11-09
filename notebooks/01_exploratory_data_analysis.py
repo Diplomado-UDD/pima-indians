@@ -113,6 +113,12 @@ def _(df, mo, pd):
             for col in df.columns
         ]
     })
+    print(missing_summary.to_markdown())
+    return (bio_features,)
+
+
+@app.cell
+def _(bio_features, df, plt):
     return (bio_features,)
 
 
@@ -502,6 +508,7 @@ def _(clinical_stats, mo, pd):
     mo.md("### Clinical Category Distribution")
 
     stats_df = pd.DataFrame(list(clinical_stats.items()), columns=['Category', 'Count'])
+    print(stats_df.to_markdown())
     return
 
 

@@ -11,7 +11,7 @@ import joblib
 import pandas as pd
 import yaml
 
-from src.config.constants import DEFAULT_ID_COLUMN, REQUIRED_COLUMNS
+from src.config.constants import DEFAULT_ID_COLUMN
 from src.data.validate_input import DiabetesDataValidator
 from src.monitoring.drift_detection import detect_drift
 

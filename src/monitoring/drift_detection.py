@@ -65,8 +65,8 @@ def detect_drift(reference_path: Path, current_path: Path, output_dir: Path, thr
     with open(summary_path, "w") as f:
         json.dump(drift_summary, f, indent=2)
 
-    print(f"Drift Detection Report")
-    print(f"=" * 60)
+    print("Drift Detection Report")
+    print("=" * 60)
     print(f"Dataset drift detected: {drift_summary['dataset_drift']}")
     print(f"Drifted columns: {drift_summary['number_of_drifted_columns']}/{len(REQUIRED_COLUMNS)}")
     print(f"Share of drifted columns: {drift_summary['share_of_drifted_columns']:.1%}")
