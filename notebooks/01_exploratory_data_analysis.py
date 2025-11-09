@@ -53,7 +53,6 @@ def _(Path, pd):
 
     # Extract feature names (excluding target)
     features = df.columns.drop('Outcome').tolist()
-
     return df, features, n_features, n_positive, n_samples, positive_rate
 
 
@@ -118,8 +117,8 @@ def _(df, mo, pd):
 
 
 @app.cell
-def _(bio_features, df, plt):
-    return (bio_features,)
+def _():
+    return
 
 
 @app.cell
@@ -296,12 +295,12 @@ def _(df, features, np, plt):
         # --- FIX ---
         # Called methods directly on '_ax' instead of 'plt'
         _ax.set_xlabel('Outcome')
-    
+
         # --- FIX ---
         # Used the correct loop variable '_feature' (not 'feature')
         _ax.set_ylabel(_feature)
         _ax.set_title(f'{_feature} by Diabetes Status')
-    
+
         # --- FIX ---
         # Replaced plt.sca() and plt.xticks() with a direct call.
         # pandas boxplot(by=...) plots groups at ticks 1 and 2
@@ -508,7 +507,7 @@ def _(clinical_stats, mo, pd):
     mo.md("### Clinical Category Distribution")
 
     stats_df = pd.DataFrame(list(clinical_stats.items()), columns=['Category', 'Count'])
-    print(stats_df.to_markdown())
+    print(stats_df)
     return
 
 
@@ -724,31 +723,6 @@ def _(mo):
     3. **Validate**: Periodic comparison with clinical guidelines
     4. **Retrain**: When new data covers underrepresented groups
     """)
-    return
-
-
-@app.cell
-def _():
-    return
-
-
-@app.cell
-def _():
-    return
-
-
-@app.cell
-def _():
-    return
-
-
-@app.cell
-def _():
-    return
-
-
-@app.cell
-def _():
     return
 
 

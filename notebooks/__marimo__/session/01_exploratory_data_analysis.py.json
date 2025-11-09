@@ -5,292 +5,6 @@
   },
   "cells": [
     {
-      "id": "bkHC",
-      "code_hash": "25acb9f98aae83b71d03909d3004a577",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"sample-data\">Sample Data</h3></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "PKri",
-      "code_hash": "8a985f9a25efa951de71b8ff82afe513",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><strong>Finding</strong>: No explicit nulls, but zeros in biological features represent missing data!</span>\n<ul>\n<li><strong>Glucose</strong>: Cannot be 0 (person would be dead)</li>\n<li><strong>BloodPressure</strong>: Cannot be 0 (no pulse)</li>\n<li><strong>BMI</strong>: Cannot be 0 (no body mass)</li>\n</ul></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "BYtC",
-      "code_hash": "118d54090d135dc76a303a53b8c245a5",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"3-univariate-analysis-feature-distributions\">3. Univariate Analysis: Feature Distributions</h2></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "Kclp",
-      "code_hash": "27001c924607eb002eaa541de5ac5a66",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"feature-distributions-excluding-zeros\">Feature Distributions (Excluding Zeros)</h3></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "Hstk",
-      "code_hash": "58575b4b0538624115d6b197fb03dc7d",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"statistical-summary\">Statistical Summary</h3></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "nWHF",
-      "code_hash": "3dbea6b49e2f7a6fb376fb6c7b11109f",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><strong>Observations</strong>:</span>\n<ul>\n<li><strong>Glucose</strong> is right-skewed (expected for diabetic population)</li>\n<li><strong>Insulin</strong> highly variable and skewed</li>\n<li><strong>Age</strong> ranges 21-81, median ~29 (relatively young cohort)</li>\n<li><strong>BMI</strong> median ~32 (obese range, expected for at-risk population)</li>\n</ul></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "iLit",
-      "code_hash": "055fde18a74ec8aa37ea8647dd922c39",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"4-bivariate-analysis-features-vs-diabetes-outcome\">4. Bivariate Analysis: Features vs. Diabetes Outcome</h2></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "ROlb",
-      "code_hash": "d19c667f9b2af4dae6e73abdcfe107d3",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"feature-distributions-by-diabetes-status\">Feature Distributions by Diabetes Status</h3></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "TqIu",
-      "code_hash": "2e9cc0262364ea162ea5f644ea39a052",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"mean-differences-by-diabetes-status\">Mean Differences by Diabetes Status</h3></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "DnEU",
-      "code_hash": "9b4ab2c9171d4a752768e676b219c96c",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"5-multivariate-analysis-feature-correlations\">5. Multivariate Analysis: Feature Correlations</h2></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "ecfG",
-      "code_hash": "f3e8ef74a2398fe2b86d22cd8601e044",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"correlation-heatmap\">Correlation Heatmap</h3></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "nHfw",
-      "code_hash": "72e135bc9ccf447296eadb06826f90c3",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"6-clinical-context-analysis\">6. Clinical Context Analysis</h2></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "AjVT",
-      "code_hash": "09721e9d85226607a4d9fffc2e3268cb",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"clinical-threshold-analysis\">Clinical Threshold Analysis</h3></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "aqbW",
-      "code_hash": "ed41d5b2ff4222191112002553f8e150",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"7-subgroup-fairness-analysis\">7. Subgroup &amp; Fairness Analysis</h2></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "dNNg",
-      "code_hash": "29fc5df30a7070c94ce11f42735298d8",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"diabetes-rate-by-age-group-and-bmi-category\">Diabetes Rate by Age Group and BMI Category</h3></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "wlCL",
-      "code_hash": "c69ac0860fe66d024c25e6cb03eaf5da",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"subgroup-analysis-visualization\">Subgroup Analysis Visualization</h3></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "kqZH",
-      "code_hash": "bacaff27c1307725c71c6d61a97da958",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><strong>Fairness Observations</strong>:</span>\n<ul>\n<li>Diabetes rate increases with age (expected biological trend)</li>\n<li>Diabetes rate increases with BMI (strong clinical association)</li>\n<li><strong>Potential bias</strong>: Undersampling of &gt;60 age group</li>\n<li><strong>Recommendation</strong>: Monitor model performance across all subgroups</li>\n</ul></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "wAgl",
-      "code_hash": "d5b9cd87e6ed90996464de759bd012b0",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"8-outlier-detection\">8. Outlier Detection</h2></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "dGlV",
-      "code_hash": "d24623c51f3a32915b201351fe66c8de",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"outlier-detection-z-score-3\">Outlier Detection (Z-score &gt; 3)</h3></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "SdmI",
-      "code_hash": "29ab4b40cff53741d3bbff88dcdce123",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><strong>Finding</strong>: Few extreme outliers (all &lt; 5% of data)</span>\n<span class=\"paragraph\"><strong>Recommendation</strong>:</span>\n<ul>\n<li>Keep outliers (may be clinically valid extreme cases)</li>\n<li>Robust model (tree-based) will handle naturally</li>\n<li>Monitor outlier influence in model evaluation</li>\n</ul></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "lgWD",
-      "code_hash": "10a53b9851280bd33810ff079c4248a9",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"9-key-findings-recommendations\">9. Key Findings &amp; Recommendations</h2></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "yOPj",
-      "code_hash": "cef046d244efaaca15104e279615eb72",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"summary-of-eda-findings\">Summary of EDA Findings</h3>\n<h4 id=\"data-quality-issues\">Data Quality Issues</h4>\n<ol>\n<li>\n<span class=\"paragraph\"><strong>Missing Data</strong>: ~50% missing values in Insulin, represented as zeros</span>\n<ul>\n<li><strong>Action</strong>: Median imputation for non-zero values \u2713 (implemented)</li>\n</ul>\n</li>\n<li>\n<span class=\"paragraph\"><strong>Biologically Implausible Zeros</strong>: Found in Glucose, BloodPressure, BMI</span>\n<ul>\n<li><strong>Action</strong>: Replace with imputed values \u2713 (implemented)</li>\n</ul>\n</li>\n</ol>\n<h4 id=\"feature-insights\">Feature Insights</h4>\n<ol start=\"3\">\n<li>\n<span class=\"paragraph\"><strong>Strongest Predictors</strong>: Glucose, BMI, Age (high correlation with outcome)</span>\n<ul>\n<li><strong>Action</strong>: Prioritize in feature engineering \u2713 (implemented)</li>\n</ul>\n</li>\n<li>\n<span class=\"paragraph\"><strong>Clinical Thresholds</strong>: Features align with medical diagnostic criteria</span>\n<ul>\n<li><strong>Validation</strong>: Model predictions should respect clinical knowledge</li>\n</ul>\n</li>\n</ol>\n<h4 id=\"fairness-bias-considerations\">Fairness &amp; Bias Considerations</h4>\n<ol start=\"5\">\n<li>\n<span class=\"paragraph\"><strong>Age Bias</strong>: Younger cohort (median 29), limited &gt;60 representation</span>\n<ul>\n<li><strong>Action</strong>: Monitor model performance across age groups \u2713 (added to plan)</li>\n</ul>\n</li>\n<li>\n<span class=\"paragraph\"><strong>Class Imbalance</strong>: 35% positive (moderate imbalance)</span>\n<ul>\n<li><strong>Action</strong>: Class weighting (NOT SMOTE) \u2713 (implemented)</li>\n</ul>\n</li>\n</ol>\n<h4 id=\"model-design-justification\">Model Design Justification</h4>\n<ol start=\"7\">\n<li>\n<span class=\"paragraph\"><strong>Recall Optimization</strong>: Medical screening requires high sensitivity</span>\n<ul>\n<li><strong>Target</strong>: \u226585% recall to catch diabetic patients</li>\n<li><strong>Trade-off</strong>: Accept ~45% false positive rate for confirmatory testing</li>\n</ul>\n</li>\n<li>\n<span class=\"paragraph\"><strong>Feature Engineering</strong>: Created BMI_Category, Age_Group, interactions</span>\n<ul>\n<li><strong>Justification</strong>: Captures non-linear clinical relationships</li>\n</ul>\n</li>\n</ol>\n<h3 id=\"preprocessing-pipeline-validation\">Preprocessing Pipeline Validation</h3>\n<span class=\"paragraph\">The implemented pipeline addresses all identified data quality issues:</span>\n<div class=\"language-python codehilite\"><pre><span></span><code><span class=\"n\">Pipeline</span><span class=\"p\">([</span>\n    <span class=\"p\">(</span><span class=\"s1\">&#39;zero_imputer&#39;</span><span class=\"p\">,</span> <span class=\"n\">ZeroImputer</span><span class=\"p\">()),</span>      <span class=\"c1\"># Fixes missing data</span>\n    <span class=\"p\">(</span><span class=\"s1\">&#39;feature_engineer&#39;</span><span class=\"p\">,</span> <span class=\"n\">FeatureEngineer</span><span class=\"p\">()),</span>  <span class=\"c1\"># Captures non-linearity</span>\n    <span class=\"p\">(</span><span class=\"s1\">&#39;scaler&#39;</span><span class=\"p\">,</span> <span class=\"n\">StandardScaler</span><span class=\"p\">())</span>          <span class=\"c1\"># Normalization</span>\n<span class=\"p\">])</span>\n</code></pre></div>\n<h3 id=\"next-steps-post-eda\">Next Steps Post-EDA</h3>\n<ol>\n<li>\u2713 <strong>Model Training</strong>: LightGBM with class weighting</li>\n<li>\u2713 <strong>Threshold Optimization</strong>: Maximize precision @ recall \u2265 0.85</li>\n<li>\u26a0\ufe0f <strong>Subgroup Evaluation</strong>: Verify performance across age/BMI groups</li>\n<li>\u26a0\ufe0f <strong>Clinical Validation</strong>: Compare predictions to diagnostic thresholds</li>\n</ol>\n<h3 id=\"recommendations-for-production\">Recommendations for Production</h3>\n<ol>\n<li><strong>Monitor</strong>: Track performance across demographic subgroups</li>\n<li><strong>Alert</strong>: Flag if age/BMI distribution shifts (data drift)</li>\n<li><strong>Validate</strong>: Periodic comparison with clinical guidelines</li>\n<li><strong>Retrain</strong>: When new data covers underrepresented groups</li>\n</ol></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
       "id": "Hbol",
       "code_hash": "e6015a8cec3ec790fef2da0b3accd67d",
       "outputs": [
@@ -330,8 +44,41 @@
       "console": []
     },
     {
+      "id": "bkHC",
+      "code_hash": "25acb9f98aae83b71d03909d3004a577",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"sample-data\">Sample Data</h3></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
       "id": "lEQa",
-      "code_hash": "afc7101e8fa2582af3c6d6e3fc727bc0",
+      "code_hash": "a65196365be9ef6278eede1f4d094cdc",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "|                          |   Explicit Nulls |   Zero Values | Zero % (if bio feature)   |\n|:-------------------------|-----------------:|--------------:|:--------------------------|\n| Pregnancies              |                0 |           111 | N/A                       |\n| Glucose                  |                0 |             5 | 0.7%                      |\n| BloodPressure            |                0 |            35 | 4.6%                      |\n| SkinThickness            |                0 |           227 | 29.6%                     |\n| Insulin                  |                0 |           374 | 48.7%                     |\n| BMI                      |                0 |            11 | 1.4%                      |\n| DiabetesPedigreeFunction |                0 |             0 | N/A                       |\n| Age                      |                0 |             0 | N/A                       |\n| Outcome                  |                0 |           500 | N/A                       |\n",
+          "mimetype": "text/plain"
+        }
+      ]
+    },
+    {
+      "id": "PKri",
+      "code_hash": null,
       "outputs": [
         {
           "type": "data",
@@ -344,6 +91,19 @@
     },
     {
       "id": "Xref",
+      "code_hash": "8a985f9a25efa951de71b8ff82afe513",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><strong>Finding</strong>: No explicit nulls, but zeros in biological features represent missing data!</span>\n<ul>\n<li><strong>Glucose</strong>: Cannot be 0 (person would be dead)</li>\n<li><strong>BloodPressure</strong>: Cannot be 0 (no pulse)</li>\n<li><strong>BMI</strong>: Cannot be 0 (no body mass)</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "SFPL",
       "code_hash": "fe920e7d18204105c8a107c5004dfa5b",
       "outputs": [
         {
@@ -356,7 +116,7 @@
       "console": []
     },
     {
-      "id": "SFPL",
+      "id": "BYtC",
       "code_hash": "567d758b7e9f72545a67cf5dcb9e0bad",
       "outputs": [
         {
@@ -370,6 +130,19 @@
     },
     {
       "id": "RGSE",
+      "code_hash": "118d54090d135dc76a303a53b8c245a5",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"3-univariate-analysis-feature-distributions\">3. Univariate Analysis: Feature Distributions</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Kclp",
       "code_hash": "accd5108b9a5facc92110691408eb39f",
       "outputs": [
         {
@@ -383,6 +156,19 @@
     },
     {
       "id": "emfo",
+      "code_hash": "27001c924607eb002eaa541de5ac5a66",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"feature-distributions-excluding-zeros\">Feature Distributions (Excluding Zeros)</h3></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Hstk",
       "code_hash": "3005e9f27f67cb58dc113870f797c15d",
       "outputs": [
         {
@@ -395,7 +181,46 @@
       "console": []
     },
     {
+      "id": "nWHF",
+      "code_hash": "58575b4b0538624115d6b197fb03dc7d",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"statistical-summary\">Statistical Summary</h3></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "iLit",
+      "code_hash": "3dbea6b49e2f7a6fb376fb6c7b11109f",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><strong>Observations</strong>:</span>\n<ul>\n<li><strong>Glucose</strong> is right-skewed (expected for diabetic population)</li>\n<li><strong>Insulin</strong> highly variable and skewed</li>\n<li><strong>Age</strong> ranges 21-81, median ~29 (relatively young cohort)</li>\n<li><strong>BMI</strong> median ~32 (obese range, expected for at-risk population)</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
       "id": "ZHCJ",
+      "code_hash": "055fde18a74ec8aa37ea8647dd922c39",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"4-bivariate-analysis-features-vs-diabetes-outcome\">4. Bivariate Analysis: Features vs. Diabetes Outcome</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ROlb",
       "code_hash": "9c42f302ae90f535e599f4dd776d7b5c",
       "outputs": [
         {
@@ -409,6 +234,19 @@
     },
     {
       "id": "qnkX",
+      "code_hash": "d19c667f9b2af4dae6e73abdcfe107d3",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"feature-distributions-by-diabetes-status\">Feature Distributions by Diabetes Status</h3></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "TqIu",
       "code_hash": "5f0442a637a65cf14208ec1707bad5e4",
       "outputs": [
         {
@@ -422,6 +260,19 @@
     },
     {
       "id": "Vxnm",
+      "code_hash": "2e9cc0262364ea162ea5f644ea39a052",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"mean-differences-by-diabetes-status\">Mean Differences by Diabetes Status</h3></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "DnEU",
       "code_hash": "d92c854a6e272fd6925bf5528784d61d",
       "outputs": [
         {
@@ -435,6 +286,19 @@
     },
     {
       "id": "ulZA",
+      "code_hash": "9b4ab2c9171d4a752768e676b219c96c",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"5-multivariate-analysis-feature-correlations\">5. Multivariate Analysis: Feature Correlations</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ecfG",
       "code_hash": "d0437f3b1fd961dcbcd460cd85c28f76",
       "outputs": [
         {
@@ -448,6 +312,19 @@
     },
     {
       "id": "Pvdt",
+      "code_hash": "f3e8ef74a2398fe2b86d22cd8601e044",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"correlation-heatmap\">Correlation Heatmap</h3></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ZBYS",
       "code_hash": "5c1c0eb84c15499bd10538b4496a9f6b",
       "outputs": [
         {
@@ -460,7 +337,7 @@
       "console": []
     },
     {
-      "id": "ZBYS",
+      "id": "aLJB",
       "code_hash": "f8e3fcb094375e78c92f7827eb649721",
       "outputs": [
         {
@@ -473,7 +350,7 @@
       "console": []
     },
     {
-      "id": "aLJB",
+      "id": "nHfw",
       "code_hash": "7a276628d3ac8ae8aaa6ccb30ae0a72d",
       "outputs": [
         {
@@ -483,10 +360,30 @@
           }
         }
       ],
-      "console": []
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "/var/folders/p1/vpgfln0n1_z645h_60n7_9940000gr/T/marimo_77691/__marimo__cell_nHfw_.py:1: FutureWarning: The behavior of Series.idxmax with all-NA values, or any-NA and skipna=False, is deprecated. In a future version this will raise ValueError\n  strongest_feature = outcome_corr.idxmax()\n",
+          "mimetype": "text/plain"
+        }
+      ]
     },
     {
       "id": "xXTn",
+      "code_hash": "72e135bc9ccf447296eadb06826f90c3",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"6-clinical-context-analysis\">6. Clinical Context Analysis</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "AjVT",
       "code_hash": "5b4b729b6511a0c21dbbe2b7fde6f813",
       "outputs": [
         {
@@ -500,6 +397,19 @@
     },
     {
       "id": "pHFh",
+      "code_hash": "09721e9d85226607a4d9fffc2e3268cb",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"clinical-threshold-analysis\">Clinical Threshold Analysis</h3></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "NCOB",
       "code_hash": "2eab3f74fe1ba70ddc2637cc35e9ab58",
       "outputs": [
         {
@@ -512,8 +422,8 @@
       "console": []
     },
     {
-      "id": "NCOB",
-      "code_hash": "b381e38b3a2701ef8b1cd207753e0c80",
+      "id": "aqbW",
+      "code_hash": "707b73df04fdb9107ee55f179c051ed0",
       "outputs": [
         {
           "type": "data",
@@ -522,10 +432,30 @@
           }
         }
       ],
-      "console": []
+      "console": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "                        Category  Count\n0          Glucose Normal (<100)    192\n1  Glucose Prediabetes (100-125)    274\n2        Glucose Diabetes (\u2265126)    297\n3               BMI Normal (<25)    106\n4         BMI Overweight (25-30)    179\n5                BMI Obese (\u226530)    472\n",
+          "mimetype": "text/plain"
+        }
+      ]
     },
     {
       "id": "TRpd",
+      "code_hash": "ed41d5b2ff4222191112002553f8e150",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"7-subgroup-fairness-analysis\">7. Subgroup &amp; Fairness Analysis</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "TXez",
       "code_hash": "38ddc562aea591264db218aa787435ec",
       "outputs": [
         {
@@ -538,7 +468,7 @@
       "console": []
     },
     {
-      "id": "TXez",
+      "id": "dNNg",
       "code_hash": "600339afe258a205bcafc01f1595e848",
       "outputs": [
         {
@@ -548,10 +478,30 @@
           }
         }
       ],
-      "console": []
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "/var/folders/p1/vpgfln0n1_z645h_60n7_9940000gr/T/marimo_77691/__marimo__cell_dNNg_.py:2: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.\n  age_outcome = df_analysis.groupby('Age_Group')['Outcome'].agg(['mean', 'count'])\n/var/folders/p1/vpgfln0n1_z645h_60n7_9940000gr/T/marimo_77691/__marimo__cell_dNNg_.py:5: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.\n  bmi_outcome = df_analysis.groupby('BMI_Category')['Outcome'].agg(['mean', 'count'])\n",
+          "mimetype": "text/plain"
+        }
+      ]
     },
     {
       "id": "yCnT",
+      "code_hash": "29fc5df30a7070c94ce11f42735298d8",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"diabetes-rate-by-age-group-and-bmi-category\">Diabetes Rate by Age Group and BMI Category</h3></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "wlCL",
       "code_hash": "249dcf1995106abca5dd02d5f5c6af92",
       "outputs": [
         {
@@ -561,10 +511,56 @@
           }
         }
       ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "/var/folders/p1/vpgfln0n1_z645h_60n7_9940000gr/T/marimo_77691/__marimo__cell_wlCL_.py:5: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.\n  age_stats = df_analysis.groupby('Age_Group')['Outcome'].mean() * 100\n/var/folders/p1/vpgfln0n1_z645h_60n7_9940000gr/T/marimo_77691/__marimo__cell_wlCL_.py:17: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.\n  bmi_stats = df_analysis.groupby('BMI_Category')['Outcome'].mean() * 100\n",
+          "mimetype": "text/plain"
+        }
+      ]
+    },
+    {
+      "id": "kqZH",
+      "code_hash": "c69ac0860fe66d024c25e6cb03eaf5da",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"subgroup-analysis-visualization\">Subgroup Analysis Visualization</h3></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "wAgl",
+      "code_hash": "bacaff27c1307725c71c6d61a97da958",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><strong>Fairness Observations</strong>:</span>\n<ul>\n<li>Diabetes rate increases with age (expected biological trend)</li>\n<li>Diabetes rate increases with BMI (strong clinical association)</li>\n<li><strong>Potential bias</strong>: Undersampling of &gt;60 age group</li>\n<li><strong>Recommendation</strong>: Monitor model performance across all subgroups</li>\n</ul></span>"
+          }
+        }
+      ],
       "console": []
     },
     {
       "id": "rEll",
+      "code_hash": "d5b9cd87e6ed90996464de759bd012b0",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"8-outlier-detection\">8. Outlier Detection</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "dGlV",
       "code_hash": "3081f238a6ba32e513f9388b96426c5c",
       "outputs": [
         {
@@ -577,65 +573,52 @@
       "console": []
     },
     {
+      "id": "SdmI",
+      "code_hash": "d24623c51f3a32915b201351fe66c8de",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"outlier-detection-z-score-3\">Outlier Detection (Z-score &gt; 3)</h3></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "lgWD",
+      "code_hash": "29ab4b40cff53741d3bbff88dcdce123",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><strong>Finding</strong>: Few extreme outliers (all &lt; 5% of data)</span>\n<span class=\"paragraph\"><strong>Recommendation</strong>:</span>\n<ul>\n<li>Keep outliers (may be clinically valid extreme cases)</li>\n<li>Robust model (tree-based) will handle naturally</li>\n<li>Monitor outlier influence in model evaluation</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "yOPj",
+      "code_hash": "10a53b9851280bd33810ff079c4248a9",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"9-key-findings-recommendations\">9. Key Findings &amp; Recommendations</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
       "id": "fwwy",
-      "code_hash": null,
+      "code_hash": "cef046d244efaaca15104e279615eb72",
       "outputs": [
         {
           "type": "data",
           "data": {
-            "text/plain": ""
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "LJZf",
-      "code_hash": null,
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/plain": ""
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "urSm",
-      "code_hash": null,
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/plain": ""
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "jxvo",
-      "code_hash": null,
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/plain": ""
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "mWxS",
-      "code_hash": null,
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/plain": ""
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"summary-of-eda-findings\">Summary of EDA Findings</h3>\n<h4 id=\"data-quality-issues\">Data Quality Issues</h4>\n<ol>\n<li>\n<span class=\"paragraph\"><strong>Missing Data</strong>: ~50% missing values in Insulin, represented as zeros</span>\n<ul>\n<li><strong>Action</strong>: Median imputation for non-zero values \u2713 (implemented)</li>\n</ul>\n</li>\n<li>\n<span class=\"paragraph\"><strong>Biologically Implausible Zeros</strong>: Found in Glucose, BloodPressure, BMI</span>\n<ul>\n<li><strong>Action</strong>: Replace with imputed values \u2713 (implemented)</li>\n</ul>\n</li>\n</ol>\n<h4 id=\"feature-insights\">Feature Insights</h4>\n<ol start=\"3\">\n<li>\n<span class=\"paragraph\"><strong>Strongest Predictors</strong>: Glucose, BMI, Age (high correlation with outcome)</span>\n<ul>\n<li><strong>Action</strong>: Prioritize in feature engineering \u2713 (implemented)</li>\n</ul>\n</li>\n<li>\n<span class=\"paragraph\"><strong>Clinical Thresholds</strong>: Features align with medical diagnostic criteria</span>\n<ul>\n<li><strong>Validation</strong>: Model predictions should respect clinical knowledge</li>\n</ul>\n</li>\n</ol>\n<h4 id=\"fairness-bias-considerations\">Fairness &amp; Bias Considerations</h4>\n<ol start=\"5\">\n<li>\n<span class=\"paragraph\"><strong>Age Bias</strong>: Younger cohort (median 29), limited &gt;60 representation</span>\n<ul>\n<li><strong>Action</strong>: Monitor model performance across age groups \u2713 (added to plan)</li>\n</ul>\n</li>\n<li>\n<span class=\"paragraph\"><strong>Class Imbalance</strong>: 35% positive (moderate imbalance)</span>\n<ul>\n<li><strong>Action</strong>: Class weighting (NOT SMOTE) \u2713 (implemented)</li>\n</ul>\n</li>\n</ol>\n<h4 id=\"model-design-justification\">Model Design Justification</h4>\n<ol start=\"7\">\n<li>\n<span class=\"paragraph\"><strong>Recall Optimization</strong>: Medical screening requires high sensitivity</span>\n<ul>\n<li><strong>Target</strong>: \u226585% recall to catch diabetic patients</li>\n<li><strong>Trade-off</strong>: Accept ~45% false positive rate for confirmatory testing</li>\n</ul>\n</li>\n<li>\n<span class=\"paragraph\"><strong>Feature Engineering</strong>: Created BMI_Category, Age_Group, interactions</span>\n<ul>\n<li><strong>Justification</strong>: Captures non-linear clinical relationships</li>\n</ul>\n</li>\n</ol>\n<h3 id=\"preprocessing-pipeline-validation\">Preprocessing Pipeline Validation</h3>\n<span class=\"paragraph\">The implemented pipeline addresses all identified data quality issues:</span>\n<div class=\"language-python codehilite\"><pre><span></span><code><span class=\"n\">Pipeline</span><span class=\"p\">([</span>\n    <span class=\"p\">(</span><span class=\"s1\">&#39;zero_imputer&#39;</span><span class=\"p\">,</span> <span class=\"n\">ZeroImputer</span><span class=\"p\">()),</span>      <span class=\"c1\"># Fixes missing data</span>\n    <span class=\"p\">(</span><span class=\"s1\">&#39;feature_engineer&#39;</span><span class=\"p\">,</span> <span class=\"n\">FeatureEngineer</span><span class=\"p\">()),</span>  <span class=\"c1\"># Captures non-linearity</span>\n    <span class=\"p\">(</span><span class=\"s1\">&#39;scaler&#39;</span><span class=\"p\">,</span> <span class=\"n\">StandardScaler</span><span class=\"p\">())</span>          <span class=\"c1\"># Normalization</span>\n<span class=\"p\">])</span>\n</code></pre></div>\n<h3 id=\"next-steps-post-eda\">Next Steps Post-EDA</h3>\n<ol>\n<li>\u2713 <strong>Model Training</strong>: LightGBM with class weighting</li>\n<li>\u2713 <strong>Threshold Optimization</strong>: Maximize precision @ recall \u2265 0.85</li>\n<li>\u26a0\ufe0f <strong>Subgroup Evaluation</strong>: Verify performance across age/BMI groups</li>\n<li>\u26a0\ufe0f <strong>Clinical Validation</strong>: Compare predictions to diagnostic thresholds</li>\n</ol>\n<h3 id=\"recommendations-for-production\">Recommendations for Production</h3>\n<ol>\n<li><strong>Monitor</strong>: Track performance across demographic subgroups</li>\n<li><strong>Alert</strong>: Flag if age/BMI distribution shifts (data drift)</li>\n<li><strong>Validate</strong>: Periodic comparison with clinical guidelines</li>\n<li><strong>Retrain</strong>: When new data covers underrepresented groups</li>\n</ol></span>"
           }
         }
       ],
