@@ -177,11 +177,12 @@ Model is tuned to maximize **sensitivity (recall)** while maintaining acceptable
 
 | Metric | Value |
 |--------|-------|
-| Recall (Sensitivity) | 0.87 |
-| Precision | 0.51 |
-| F2-Score | 0.78 |
+| Recall (Sensitivity) | 0.852 |
+| Precision | 0.568 |
+| F2-Score | 0.774 |
 | AUC-ROC | 0.82 |
-| Optimal Threshold | 0.35 |
+| Optimal Threshold | 0.459 |
+| False Negatives | 8 |
 
 ## Development
 

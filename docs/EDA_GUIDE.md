@@ -12,6 +12,12 @@
 
 ## Running the EDA Notebook
 
+### Prerequisites
+
+- Python 3.12+
+- uv installed
+- Dependencies synced (`uv sync`)
+
 ### Quick Start
 
 ```bash
